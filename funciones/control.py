@@ -15,10 +15,10 @@ def NewMedicos():
     gf.borrar_pantalla()
     print(title)
     
-    NroIdentificacion = input("Ingrese el numero de identificacion del medico :")
+    NroIdentificacion = int(input("Ingrese el numero de identificacion del medico :"))
     NombreApellido = input("Ingrese el nombre y apellido del medico:")
     Email = input("Ingrese el correo electronico :")
-    NroConsultorio = input("Cual es el numero del consultorio del medico :")
+    NroConsultorio = int(input("Cual es el numero del consultorio del medico :"))
     especializacion = input("Cual es la especializacion del medico? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
     especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
     if especializacion not in especialidades_validas:
@@ -158,20 +158,20 @@ def NewPacientes():
     """
     gf.borrar_pantalla()
     print(title)
-    NroIdentificacion = input("Ingrese el numero de identificacion : ")
+    NroIdentificacion = int(input("Ingrese el numero de identificacion : "))
     NombreApellido = input("Ingrese el nombre y apellido : ")
-    NumeroTelefonico = input("Ingrese su numero de telefono : ")
-    NumeroCelular = input("Ingrese su numero de celular : ")
-    FechaNacimiento = input("Ingrese la fecha de nacimiento DD/MM/AA : ")
-    Edad = input("Ingrese su edad : ")
+    NumeroTelefonico = int(input("Ingrese su numero de telefono : "))
+    NumeroCelular = int(input("Ingrese su numero de celular : "))
+    FechaNacimiento = int(input("Ingrese la fecha de nacimiento DD/MM/AA : "))
+    Edad = int(input("Ingrese su edad : "))
     Genero = input("Ingrese el genero : ")
-    NroConsultorio = input("Cual es el numero del consultorio : ")
+    NroConsultorio = int(input("Cual es el numero del consultorio : "))
     especializacion = input("De que especializacion la quiere? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
     especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
     if especializacion not in especialidades_validas:
         print("La especializacion es invalida debes escoger entre:", ", ".join(especialidades_validas))
     else:
-        hora_cita = input("Ingrese la hora de la cita (formato HH:MM): ")
+        hora_cita = int(input("Ingrese la hora de la cita (formato HH:MM): "))
         
         try:
             hora_cita_dt = datetime.strptime(hora_cita, '%H:%M')
