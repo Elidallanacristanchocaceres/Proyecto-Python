@@ -223,7 +223,7 @@ def NewPacientes():
         
         
 
-        paciente_id = input("Ingrese el número de identificación del medico:")
+        paciente_id = int(input("Ingrese el número de identificación del medico:"))
         paciente_info = gf.centroMedico.get('data').get(especializacion, {}).get(paciente_id)
         if paciente_info:
             if 'Citas' not in paciente_info:
@@ -241,7 +241,7 @@ def NewPacientes():
             uisSt.MenuPacientes(0)
 
 def BuscarDatosPaciente():
-    criterio = input('Ingrese el Nro Identificación del paciente : ')
+    criterio = int(input('Ingrese el Nro Identificación del paciente : '))
     datos = gf.centroMedico.get('data').get(criterio)
     return datos
 
@@ -324,7 +324,7 @@ def LeerPacientes(especializacion=None):
 
     
 def EliminarPaciente():
-    NroIdentificacion = input("Ingrese el número de identificación del paciente que desea eliminar: ")
+    NroIdentificacion = int(input("Ingrese el número de identificación del paciente que desea eliminar: "))
     centroMedico = gf.centroMedico.get('data')
     if NroIdentificacion in centroMedico:
         del centroMedico[NroIdentificacion]

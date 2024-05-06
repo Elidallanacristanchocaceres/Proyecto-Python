@@ -4,7 +4,7 @@ import funciones.control as st
 import main
 
 def ConsultarPaciente():
-    NroIdentificacion = input("Ingrese su número de cédula : ")
+    NroIdentificacion = int(input("Ingrese su número de cédula : "))
     paciente = gf.centroMedico['data'].get(NroIdentificacion)
     if paciente:
         print("Información del Paciente : ")
