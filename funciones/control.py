@@ -4,6 +4,151 @@ from datetime import datetime, timedelta
 import funciones.globales as gf
 import modules.Inici as cf
 import ui.uipacientes as uisSt
+
+def NewMedicos():
+    
+    title = """
+    ****************************
+    * INFORMACION DEL MEDICO *
+    ****************************
+    """
+    gf.borrar_pantalla()
+    print(title)
+    
+    NroIdentificacion = input("Ingrese el numero de identificacion del medico :")
+    NombreApellido = input("Ingrese el nombre y apellido del medico:")
+    Email = input("Ingrese el correo electronico :")
+    NroConsultorio = input("Cual es el numero del consultorio del medico :")
+    especializacion = input("Cual es la especializacion del medico? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
+    especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
+    if especializacion not in especialidades_validas:
+        print("La especializacion es invalida debes escoger entre:", ", ".join(especialidades_validas))
+    else:
+        medicos = {
+            'NroIdentificacion' : NroIdentificacion,
+            'NombreApellido' : NombreApellido,
+            'Email' : Email,
+            'NroConsultorio' : NroConsultorio
+        }
+        
+        if especializacion not in gf.centroMedico['data']:
+            gf.centroMedico['data'][especializacion] = {}
+            
+        gf.centroMedico['data'][especializacion][NroIdentificacion] = medicos
+        print("El medico se añadio correctamente a la especializacoion de:", especializacion)
+        
+        cf.UpdateFile(gf.centroMedico)
+        
+        cf.UpdateFile(gf.centroMedico)
+    if(bool(input('Desea registrar otro medico? S(Si) o Enter(No) :'))):
+        NewMedicos()
+    else:
+       uisSt.MenuMedicos(0)
+
+def BuscarDatos():
+    NroIdentificacion = input('Ingrese el Nro Identificación del médico: ')
+    centroMedico = gf.centroMedico.get('data')
+
+    if centroMedico:
+        for especializacion, medicos in centroMedico.items():
+            if NroIdentificacion in medicos:
+                return medicos[NroIdentificacion]
+
+    return None
+
+def ModificarDatosMedico():
+    datosMedico = BuscarDatos()
+    if datosMedico:
+        NroIdentificacion = datosMedico['NroIdentificacion']
+        NombreApellido = datosMedico.get('NombreApellido', '')
+        Email = datosMedico.get('Email', '')
+        NroConsultorio = datosMedico.get('NroConsultorio', '')
+        especializacion = datosMedico.get('Especializacion', '')
+
+        print(f"Datos actuales del médico con Nro de Identificación {NroIdentificacion}:")
+        print(f"1. Nombre y Apellido: {NombreApellido}")
+        print(f"2. Correo Electrónico: {Email}")
+        print(f"3. Número de Consultorio: {NroConsultorio}")
+        print(f"4. Especialización: {especializacion}")
+
+        for clave in datosMedico.keys():
+            if clave not in ['NroIdentificacion']:
+                if bool(input(f'Desea modificar {clave}? S(Si) o Enter No : ')):
+                    datosMedico[clave] = input(f'Ingrese el nuevo {clave} :')
+        
+        gf.centroMedico['data'].update({NroIdentificacion: datosMedico})
+        cf.ActualizarArchivo(gf.centroMedico)
+        print("Datos del médico actualizados exitosamente.")
+    else:
+        print("No se encontraron datos para modificar.")
+    
+    gf.pausar_pantalla()
+    uisSt.MenuMedicos(0)
+
+    
+def LeerMedicos(especializacion=None):
+    titulo = """
+    *********************
+    * LISTA DEL MÉDICO  *
+    *********************
+    """
+    gf.borrar_pantalla()
+    print(titulo)
+    
+    centroMedico = gf.centroMedico.get('data')
+    
+    if not centroMedico:
+        print("No hay médicos registrados.")
+    else:
+        if especializacion:
+            medicos = centroMedico.get(especializacion, {})
+            for medico_id, medico_info in medicos.items():
+                if isinstance(medico_info, dict):  # Verifica si medico_info es un diccionario
+                    print(f"Número de Identificación: {medico_id}")
+                    print(f"Nombre y Apellido: {medico_info.get('NombreApellido', 'N/A')}")
+                    print(f"Correo Electrónico: {medico_info.get('Email', 'N/A')}")
+                    print(f"Número de Consultorio: {medico_info.get('NroConsultorio', 'N/A')}")
+                    print(f"Especialización: {especializacion}")
+                    print("\n")
+                else:
+                    print(f"Número de Identificación: {medico_id}")
+                    print(f"Información del médico: {medico_info}")
+                    print("\n")
+        else:
+            for especialidad, medicos in centroMedico.items():
+                for medico_id, medico_info in medicos.items():
+                    if isinstance(medico_info, dict):  # Verifica si medico_info es un diccionario
+                        print(f"Número de Identificación: {medico_id}")
+                        print(f"Nombre y Apellido: {medico_info.get('NombreApellido', 'N/A')}")
+                        print(f"Correo Electrónico: {medico_info.get('Email', 'N/A')}")
+                        print(f"Número de Consultorio: {medico_info.get('NroConsultorio', 'N/A')}")
+                        print(f"Especialización: {especialidad}")
+                        print("\n")
+                    else:
+                        print(f"Número de Identificación: {medico_id}")
+                        print(f"Información del médico: {medico_info}")
+                        print("\n")
+            
+    gf.pausar_pantalla()
+    uisSt.MenuMedicos(especializacion)
+    
+def EliminarMedicos():
+    NroIdentificacion = input("Ingrese el número de identificación del médico que desea eliminar: ")
+    centroMedico = gf.centroMedico.get('data', {})
+    
+    for especialidad, medicos in centroMedico.items():
+        
+        if NroIdentificacion in medicos:
+            del medicos[NroIdentificacion]  
+            cf.UpdateFile(gf.centroMedico)  
+            print("Médico eliminado exitosamente.")
+            gf.pausar_pantalla()
+            return uisSt.MenuMedicos('op')
+
+    
+    print("El número de identificación no existe en la base de datos.")
+
+
 def NewPacientes():
     
     title = """
@@ -190,150 +335,6 @@ def EliminarPaciente():
         
     else:
         print("El número de identificación no existe en la base de datos.")
-
-
-def NewMedicos():
-    
-    title = """
-    ****************************
-    * INFORMACION DEL MEDICO *
-    ****************************
-    """
-    gf.borrar_pantalla()
-    print(title)
-    
-    NroIdentificacion = input("Ingrese el numero de identificacion del medico :")
-    NombreApellido = input("Ingrese el nombre y apellido del medico:")
-    Email = input("Ingrese el correo electronico :")
-    NroConsultorio = input("Cual es el numero del consultorio del medico :")
-    especializacion = input("Cual es la especializacion del medico? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
-    especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
-    if especializacion not in especialidades_validas:
-        print("La especializacion es invalida debes escoger entre:", ", ".join(especialidades_validas))
-    else:
-        medicos = {
-            'NroIdentificacion' : NroIdentificacion,
-            'NombreApellido' : NombreApellido,
-            'Email' : Email,
-            'NroConsultorio' : NroConsultorio
-        }
-        
-        if especializacion not in gf.centroMedico['data']:
-            gf.centroMedico['data'][especializacion] = {}
-            
-        gf.centroMedico['data'][especializacion][NroIdentificacion] = medicos
-        print("El medico se añadio correctamente a la especializacoion de:", especializacion)
-        
-        cf.UpdateFile(gf.centroMedico)
-        
-        cf.UpdateFile(gf.centroMedico)
-    if(bool(input('Desea registrar otro medico? S(Si) o Enter(No) :'))):
-        NewMedicos()
-    else:
-       uisSt.MenuMedicos(0)
-
-def BuscarDatos():
-    NroIdentificacion = input('Ingrese el Nro Identificación del médico: ')
-    centroMedico = gf.centroMedico.get('data')
-
-    if centroMedico:
-        for especializacion, medicos in centroMedico.items():
-            if NroIdentificacion in medicos:
-                return medicos[NroIdentificacion]
-
-    return None
-
-def ModificarDatosMedico():
-    datosMedico = BuscarDatos()
-    if datosMedico:
-        NroIdentificacion = datosMedico['NroIdentificacion']
-        NombreApellido = datosMedico.get('NombreApellido', '')
-        Email = datosMedico.get('Email', '')
-        NroConsultorio = datosMedico.get('NroConsultorio', '')
-        especializacion = datosMedico.get('Especializacion', '')
-
-        print(f"Datos actuales del médico con Nro de Identificación {NroIdentificacion}:")
-        print(f"1. Nombre y Apellido: {NombreApellido}")
-        print(f"2. Correo Electrónico: {Email}")
-        print(f"3. Número de Consultorio: {NroConsultorio}")
-        print(f"4. Especialización: {especializacion}")
-
-        for clave in datosMedico.keys():
-            if clave not in ['NroIdentificacion']:
-                if bool(input(f'Desea modificar {clave}? S(Si) o Enter No : ')):
-                    datosMedico[clave] = input(f'Ingrese el nuevo {clave} :')
-        
-        gf.centroMedico['data'].update({NroIdentificacion: datosMedico})
-        cf.ActualizarArchivo(gf.centroMedico)
-        print("Datos del médico actualizados exitosamente.")
-    else:
-        print("No se encontraron datos para modificar.")
-    
-    gf.pausar_pantalla()
-    uisSt.MenuMedicos(0)
-
-    
-def LeerMedicos(especializacion=None):
-    titulo = """
-    *********************
-    * LISTA DEL MÉDICO  *
-    *********************
-    """
-    gf.borrar_pantalla()
-    print(titulo)
-    
-    centroMedico = gf.centroMedico.get('data')
-    
-    if not centroMedico:
-        print("No hay médicos registrados.")
-    else:
-        if especializacion:
-            medicos = centroMedico.get(especializacion, {})
-            for medico_id, medico_info in medicos.items():
-                if isinstance(medico_info, dict):  # Verifica si medico_info es un diccionario
-                    print(f"Número de Identificación: {medico_id}")
-                    print(f"Nombre y Apellido: {medico_info.get('NombreApellido', 'N/A')}")
-                    print(f"Correo Electrónico: {medico_info.get('Email', 'N/A')}")
-                    print(f"Número de Consultorio: {medico_info.get('NroConsultorio', 'N/A')}")
-                    print(f"Especialización: {especializacion}")
-                    print("\n")
-                else:
-                    print(f"Número de Identificación: {medico_id}")
-                    print(f"Información del médico: {medico_info}")
-                    print("\n")
-        else:
-            for especialidad, medicos in centroMedico.items():
-                for medico_id, medico_info in medicos.items():
-                    if isinstance(medico_info, dict):  # Verifica si medico_info es un diccionario
-                        print(f"Número de Identificación: {medico_id}")
-                        print(f"Nombre y Apellido: {medico_info.get('NombreApellido', 'N/A')}")
-                        print(f"Correo Electrónico: {medico_info.get('Email', 'N/A')}")
-                        print(f"Número de Consultorio: {medico_info.get('NroConsultorio', 'N/A')}")
-                        print(f"Especialización: {especialidad}")
-                        print("\n")
-                    else:
-                        print(f"Número de Identificación: {medico_id}")
-                        print(f"Información del médico: {medico_info}")
-                        print("\n")
-            
-    gf.pausar_pantalla()
-    uisSt.MenuMedicos(especializacion)
-    
-def EliminarMedicos():
-    NroIdentificacion = input("Ingrese el número de identificación del médico que desea eliminar: ")
-    centroMedico = gf.centroMedico.get('data', {})
-    
-    for especialidad, medicos in centroMedico.items():
-        
-        if NroIdentificacion in medicos:
-            del medicos[NroIdentificacion]  
-            cf.UpdateFile(gf.centroMedico)  
-            print("Médico eliminado exitosamente.")
-            gf.pausar_pantalla()
-            return uisSt.MenuMedicos('op')
-
-    
-    print("El número de identificación no existe en la base de datos.")
     
     
 

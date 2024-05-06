@@ -9,7 +9,7 @@ def mainMenu(op):
     * ESPECIALIZACIONES DEL CENTRO MEDICO *
     ***************************************
 """
-    mainMenuOp = "1. Gestionar citas \n2 Gestionar medico \n3. Salir "
+    mainMenuOp = "1. Gestionar medico \n2 Gestionar citas \n3. Salir "
 
     if (op != 4):
         print(Title)
@@ -23,9 +23,9 @@ def mainMenu(op):
         else:
             match (opcion):
                 case 1:
-                    uiSt.MenuPacientes(0)
-                case 2:
                     uiSt.MenuMedicos(0)
+                case 2:
+                    uiSt.MenuPacientes(0)
                 case 3:
                     print('Hasta Luego')
                     fg.pausar_pantalla()
@@ -39,13 +39,6 @@ if __name__ == '__main__':
     cf.checkFile(fg.centroMedico)
     mainMenu(0)
     
-    fg.centroMedico['data'] = {
-        'Pediatria': {},
-        'Ginecologia': {},
-        'Dermatologia': {},
-        'Endocrinologia': {},
-        'Optometria': {}
-    }
     
     fg.centroMedico['data'] = {
         'Pediatria': {
