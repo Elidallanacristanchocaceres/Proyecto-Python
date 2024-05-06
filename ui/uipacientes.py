@@ -53,7 +53,7 @@ def MenuPacientes(op : int):
                 case 2:
                     st.ModificarDatosPaciente()
                 case 3:
-                    especializacion = input("Ingrese la especialización (dejar en blanco para mostrar todos) : ")
+                    especializacion = input("Ingrese la especialización (dejar en blanco para mostrarla) : ")
                     st.LeerPacientes(especializacion)
                 case 4:
                     st.EliminarPaciente()
