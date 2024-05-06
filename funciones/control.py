@@ -15,10 +15,10 @@ def NewMedicos():
     gf.borrar_pantalla()
     print(title)
     
-    NroIdentificacion = int(input("Ingrese el numero de identificacion del medico :"))
+    NroIdentificacion = input("Ingrese el numero de identificacion del medico :")
     NombreApellido = input("Ingrese el nombre y apellido del medico:")
     Email = input("Ingrese el correo electronico :")
-    NroConsultorio = int(input("Cual es el numero del consultorio del medico :"))
+    NroConsultorio = input("Cual es el numero del consultorio del medico :")
     especializacion = input("Cual es la especializacion del medico? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
     especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
     if especializacion not in especialidades_validas:
@@ -158,20 +158,20 @@ def NewPacientes():
     """
     gf.borrar_pantalla()
     print(title)
-    NroIdentificacion = int(input("Ingrese el numero de identificacion : "))
+    NroIdentificacion = input("Ingrese el numero de identificacion : ")
     NombreApellido = input("Ingrese el nombre y apellido : ")
-    NumeroTelefonico = int(input("Ingrese su numero de telefono : "))
-    NumeroCelular = int(input("Ingrese su numero de celular : "))
+    NumeroTelefonico = input("Ingrese su numero de telefono : ")
+    NumeroCelular = input("Ingrese su numero de celular : ")
     FechaNacimiento = input("Ingrese la fecha de nacimiento DD/MM/AA : ")
-    Edad = int(input("Ingrese su edad : "))
+    Edad = input("Ingrese su edad : ")
     Genero = input("Ingrese el genero : ")
-    NroConsultorio = int(input("Cual es el numero del consultorio : "))
+    NroConsultorio = input("Cual es el numero del consultorio : ")
     especializacion = input("De que especializacion la quiere? (Pediatria, Ginecologia, Dermatologia, Endocrinologia, Optometria):")
     especialidades_validas = ['Pediatria', 'Ginecologia', 'Dermatologia', 'Endocrinologia', 'Optometria']
     if especializacion not in especialidades_validas:
         print("La especializacion es invalida debes escoger entre:", ", ".join(especialidades_validas))
     else:
-        hora_cita = int(input("Ingrese la hora de la cita (formato HH:MM): "))
+        hora_cita = input("Ingrese la hora de la cita (formato HH:MM): ")
         
         try:
             hora_cita_dt = datetime.strptime(hora_cita, '%H:%M')
@@ -223,7 +223,7 @@ def NewPacientes():
         
         
 
-        paciente_id = int(input("Ingrese el número de identificación del medico:"))
+        paciente_id = input("Ingrese el número de identificación del medico:")
         paciente_info = gf.centroMedico.get('data').get(especializacion, {}).get(paciente_id)
         if paciente_info:
             if 'Citas' not in paciente_info:
@@ -241,7 +241,7 @@ def NewPacientes():
             uisSt.MenuPacientes(0)
 
 def BuscarDatosPaciente():
-    criterio = int(input('Ingrese el Nro Identificación del paciente : '))
+    criterio = input('Ingrese el Nro Identificación del paciente : ')
     datos = gf.centroMedico.get('data').get(criterio)
     return datos
 
