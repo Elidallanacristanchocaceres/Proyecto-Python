@@ -162,7 +162,7 @@ def NewPacientes():
     NombreApellido = input("Ingrese el nombre y apellido : ")
     NumeroTelefonico = int(input("Ingrese su numero de telefono : "))
     NumeroCelular = int(input("Ingrese su numero de celular : "))
-    FechaNacimiento = int(input("Ingrese la fecha de nacimiento DD/MM/AA : "))
+    FechaNacimiento = input("Ingrese la fecha de nacimiento DD/MM/AA : ")
     Edad = int(input("Ingrese su edad : "))
     Genero = input("Ingrese el genero : ")
     NroConsultorio = int(input("Cual es el numero del consultorio : "))
